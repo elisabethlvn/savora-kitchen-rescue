@@ -53,6 +53,7 @@ config:
   htmlLabels: false
   flowchart:
     useMaxWidth: true
+    diagramPadding: 120
 ---
 flowchart TD
     roma["Roma tomatoes"] -->|HAS_ALTERNATIVE| passata["Passata"]
@@ -61,7 +62,7 @@ flowchart TD
     reservation -->|FOR_SERVICE| lunch["Tomorrow lunch"]
 ```
 
-Passata and canned tomatoes each start with 10 kg on hand. The existing reservation protects 8 kg of passata for tomorrow's lunch. These are two views of the same graph; short labels keep both readable in the README.
+Passata and canned tomatoes each start with 10 kg on hand. The existing reservation protects 8 kg of passata for tomorrow's lunch. These are two views of the same stored graph.
 
 Every food, preparation and service node shown has the `KitchenNode` label; ingredients also have `Ingredient`. Base, preparation, dish and service are `kind` property values, not separate labels. The reservation has the `Reservation` label.
 
