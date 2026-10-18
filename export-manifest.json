@@ -1,0 +1,142 @@
+{
+  "format": 1,
+  "project": "Savora — Kitchen Rescue",
+  "policy": "Explicit file allowlist; no .env files, credentials, database state, node_modules, artifacts or travel application source.",
+  "files": [
+    {
+      "path": ".gitignore",
+      "bytes": 87,
+      "sha256": "3b32f2a34ab3ada6d5509c611e8ed0dd3503b3c460ec0dfdf82f5a5507928af0"
+    },
+    {
+      "path": "ASSET_LICENSES.md",
+      "bytes": 553,
+      "sha256": "df42bd7d7d86cf2b53d0ea14f757439d7d99ad3ae8ad856f54208f43eb7068ab"
+    },
+    {
+      "path": "CONFIGURATION.example.txt",
+      "bytes": 246,
+      "sha256": "6a834aab211638b0118f120858a9182bd5612ed214b5fbf3367927ab8c669748"
+    },
+    {
+      "path": "design/editorial/assets/tomatoes-dilara-pexels.jpg",
+      "bytes": 169412,
+      "sha256": "810f0d01252dac9a85f17ddfdfbcca0fd0a0a142af274ce6a02664425db70750"
+    },
+    {
+      "path": "kitchen/agent.mjs",
+      "bytes": 14967,
+      "sha256": "120ade5883ad10b67b3c4fefe2a2e2a6fcac66c16a4176693e621ec1eeb61dcc"
+    },
+    {
+      "path": "kitchen/agent.test.mjs",
+      "bytes": 10401,
+      "sha256": "9dc8a966fc6dbcbbca79f7cc29dc771accb47f00ec021902e5dc26bbb476b3f1"
+    },
+    {
+      "path": "kitchen/app.mjs",
+      "bytes": 5025,
+      "sha256": "4b6cc079cd1d8b0b37a71d8dec80bd883088d3e10e84eb50914cf252e530cbb5"
+    },
+    {
+      "path": "kitchen/app.test.mjs",
+      "bytes": 2946,
+      "sha256": "ac9eac00b43f6c3ff79228a14ed18582ee8782f00cd9b56589e4b375916274f3"
+    },
+    {
+      "path": "kitchen/CONTRACT.md",
+      "bytes": 5802,
+      "sha256": "aa7c520778cc77cdadc9b9d892ba89a6c39344d530a93d23da9a07baca5d68d7"
+    },
+    {
+      "path": "kitchen/data.mjs",
+      "bytes": 2554,
+      "sha256": "0dd9e8f3020cf6d05a84726477b5ded2a691010e01a04baaefda3976afd53d6d"
+    },
+    {
+      "path": "kitchen/dev.mjs",
+      "bytes": 839,
+      "sha256": "498b0bcbd1140baa94a0d8747dd7d30f0dfde1005daa58c45eab539096548d58"
+    },
+    {
+      "path": "kitchen/integration.test.mjs",
+      "bytes": 3337,
+      "sha256": "6d2b4f5a880f27f30d354533ac6a24e00b9ec8301c42f82dcc9244af95b1ee52"
+    },
+    {
+      "path": "kitchen/lifecycle.test.mjs",
+      "bytes": 2392,
+      "sha256": "da056a97dae00bbe43ffef49d27ba6a97801f997e806b6f2953eec764a7b9386"
+    },
+    {
+      "path": "kitchen/server.mjs",
+      "bytes": 2297,
+      "sha256": "16573bd4c791fa93a39cc2bad96e85ee56595a827a8001f9de937c2c2c62b79a"
+    },
+    {
+      "path": "kitchen/store.mjs",
+      "bytes": 24263,
+      "sha256": "30cd7d2f81f9511e105d5e3b1a9e5a4150039629e2656103833e1ee94c1689c4"
+    },
+    {
+      "path": "kitchen/store.test.mjs",
+      "bytes": 11701,
+      "sha256": "fe1f458837d251cf254d5fb6b2f9cdb92cab7bfe04e80f01251369834bd53ea4"
+    },
+    {
+      "path": "kitchen/submission/source-packaging.mjs",
+      "bytes": 20867,
+      "sha256": "3f070e756be232addfbd42b1af569e233d20c1fa8a6aa4a5429e11f54ea2497f"
+    },
+    {
+      "path": "kitchen/submission/source-packaging.test.mjs",
+      "bytes": 5356,
+      "sha256": "30bb794c2040e50fca5f525bd1a731dbceee98f340dcd43d0077286fb5cfbae8"
+    },
+    {
+      "path": "kitchen/VERIFICATION.md",
+      "bytes": 5479,
+      "sha256": "3423f5b8c36230302f5ace72ea126d030d5fee313357226154d5822410b944fd"
+    },
+    {
+      "path": "kitchen/web/index.html",
+      "bytes": 518,
+      "sha256": "94805944d2857e1beab4c491c4796b65392fb2b853776dd5785b23216633ab39"
+    },
+    {
+      "path": "kitchen/web/main.jsx",
+      "bytes": 39886,
+      "sha256": "f69018b64aeee3e0a980efe831b702a6616b3246fc185221645047e4cd187511"
+    },
+    {
+      "path": "kitchen/web/styles.css",
+      "bytes": 33994,
+      "sha256": "16121e4dbc94c1c5b884ef36300471c5c0eb9e2970199653fc8c249f7cf1b1dd"
+    },
+    {
+      "path": "kitchen/web/vite.config.js",
+      "bytes": 434,
+      "sha256": "30d2ddc7de8ff4fbbb3e3f2b53d3ca1362facf79bfa9f12689fc3871a970a855"
+    },
+    {
+      "path": "package-lock.json",
+      "bytes": 100374,
+      "sha256": "4d23335fa1c54fa6e8313fab43e45ba286fd18f889b4bc90f588a7de6cecf0f5"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1222,
+      "sha256": "81fe001697103d71bd283ba4a8279417bfce30c5bb2e811ed5a0b9a71a8ef309"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6270,
+      "sha256": "41dc4d5a5debb7be561f63222c0529dc1c9c57bd73bb0ef7e80719288a31a383"
+    },
+    {
+      "path": "RUNTIME.md",
+      "bytes": 1679,
+      "sha256": "50a0c34b89a7ab19152204297f1e9a5ad563902cb1b1e0202780d42f552caa38"
+    }
+  ]
+}

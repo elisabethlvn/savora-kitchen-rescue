@@ -1,0 +1,6 @@
+# Copy privately to .env.kitchen only if enabling the optional model.
+# Never commit keys or enable billing through this demo.
+GEMINI_API_KEY=
+GEMINI_MODEL=
+GEMINI_FREE_TIER_CONFIRMED=false
+# Optional: KITCHEN_DATA_DIR=/your/new/empty/short/path

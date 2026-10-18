@@ -1,0 +1,36 @@
+{
+  "name": "savora-kitchen-rescue",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Graph-grounded kitchen recovery with local FalkorDB, MCP tools and human-approved reservations.",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "node kitchen/dev.mjs",
+    "start": "node --env-file-if-exists=.env.kitchen kitchen/server.mjs",
+    "build": "vite build --config kitchen/web/vite.config.js",
+    "test": "node --test kitchen/*.test.mjs",
+    "kitchen:dev": "node kitchen/dev.mjs",
+    "kitchen:start": "node --env-file-if-exists=.env.kitchen kitchen/server.mjs",
+    "kitchen:build": "vite build --config kitchen/web/vite.config.js",
+    "kitchen:test": "node --test kitchen/*.test.mjs",
+    "test:packaging": "node --test kitchen/submission/source-packaging.test.mjs",
+    "export:source": "node kitchen/submission/source-packaging.mjs"
+  },
+  "dependencies": {
+    "@google/genai": "2.30.0",
+    "@modelcontextprotocol/sdk": "1.32.1",
+    "express": "5.3.0",
+    "falkordb": "6.8.0",
+    "falkordblite": "0.3.0",
+    "lucide-react": "0.468.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "vite": "7.3.7"
+  }
+}

@@ -1,0 +1,8 @@
+node_modules/
+.env*
+.kitchen-data*/
+artifacts/
+kitchen/web/dist/
+.DS_Store
+*.log
+*.zip
