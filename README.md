@@ -43,7 +43,3 @@ Ask about delayed Roma tomatoes at one hop, then four. At one hop, downstream se
 Savora is a single-user local demo. It has no multi-user authorization and is not safe for a public writable deployment. It does not send supplier messages, place purchases or infer allergens or food safety. The graph is bounded to four hops; missing coverage is not evidence that a service is unaffected.
 
 The tomato photograph is a real photograph by Dilara on Pexels, not an AI-generated image. It illustrates the interface and does not establish the tomato variety. See [asset attribution and license](ASSET_LICENSES.md). Dependencies retain their own licenses; no project source-code license has been selected.
-
-## AI-assistance disclosure
-
-Built with **OpenAI Codex coding assistance** for implementation, tests, research and documentation, under the participant's concept and design direction. The verification record covers automated tests and actual FalkorDB, MCP and Gemini checks. This does not certify complete participant review; the participant must review and understand the code and claims before submission. Gemini use within the application is separate from that development assistance.
