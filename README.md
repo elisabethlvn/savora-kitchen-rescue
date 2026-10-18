@@ -22,6 +22,30 @@ Both servers bind to loopback. The database uses a private Unix socket with TCP 
 
 Savora traverses Ingredient → shared base → preparation → dish → service paths using variable-length Cypher. Alternative ingredients, stock reservations and service timing are also graph facts. Missing or invalid facts block a proposal rather than being filled in by the model.
 
+### Graph at a glance
+
+```mermaid
+flowchart TD
+    roma["Roma tomatoes"] -->|SUPPORTS| base["Tomato base"]
+    base -->|SUPPORTS| filling["Lasagna filling"]
+    filling -->|SUPPORTS| lasagna["Baked lasagna"]
+    lasagna -->|SUPPORTS| gallery["Gallery dinner: 40 portions"]
+    base -->|SUPPORTS| sauce["Arrabbiata sauce"]
+    sauce -->|SUPPORTS| penne["Penne arrabbiata"]
+    penne -->|SUPPORTS| studio["Studio supper: 24 portions"]
+    roma -->|HAS_ALTERNATIVE| passata["Passata: 10 kg stock"]
+    roma -->|HAS_ALTERNATIVE| canned["Canned tomatoes: 10 kg stock"]
+    reservation["Reservation: 8 kg passata"] -->|RESERVES| passata
+    reservation -->|FOR_SERVICE| lunch["Tomorrow lunch"]
+```
+
+Every food, preparation and service node shown has the `KitchenNode` label; ingredients also have `Ingredient`. Base, preparation, dish and service are `kind` property values, not separate labels. The reservation has the `Reservation` label.
+
+- `trace_recipe_impact` follows `SUPPORTS` paths in FalkorDB: one hop reaches Tomato base; four hops reaches both dinners. Returned paths explain the two services and 64 connected portions.
+- `inspect_stock_reservations` follows `HAS_ALTERNATIVE`, then incoming `RESERVES` and outgoing `FOR_SERVICE` relationships. Passata needs 8 kg but has only 2 kg free after tomorrow's 8 kg reservation. Canned tomatoes need 9 kg of the 10 kg available. Required batch quantities are properties of `HAS_ALTERNATIVE`.
+
+These are the fictional scenario's stored relationships, not a model-generated explanation. The graph-backed queries and human-only approval behavior are described below.
+
 The [graph store](kitchen/store.mjs) contains the parameterized Cypher queries, stock checks and atomic approval mutation. The [data model and API contract](kitchen/CONTRACT.md) describes the relationships and response shapes. [Graph tests](kitchen/store.test.mjs) and [end-to-end tests](kitchen/integration.test.mjs) check that changed graph facts change or block the result.
 
 The [agent](kitchen/agent.mjs) calls tools through the MCP SDK's local InMemoryTransport. This is local MCP, not an externally hosted endpoint. Without Gemini configuration, guided mode calls those tools deterministically and is labeled as such. With Gemini enabled, the model selects permitted read and proposal tools; it cannot invent Cypher or recipes.
