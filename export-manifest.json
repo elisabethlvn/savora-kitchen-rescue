@@ -1,7 +1,7 @@
 {
   "format": 1,
-  "project": "Savora — Kitchen Rescue",
-  "policy": "Explicit file allowlist; no .env files, credentials, database state, node_modules, artifacts or travel application source.",
+  "project": "Savora Kitchen Rescue",
+  "policy": "Explicit source-file allowlist; excludes private configuration, credentials, database state, installed dependencies and generated artifacts.",
   "files": [
     {
       "path": ".gitignore",
@@ -85,28 +85,28 @@
     },
     {
       "path": "kitchen/submission/source-packaging.mjs",
-      "bytes": 20867,
-      "sha256": "3f070e756be232addfbd42b1af569e233d20c1fa8a6aa4a5429e11f54ea2497f"
+      "bytes": 20308,
+      "sha256": "d767d72e5d78ced383ea74261449a8bc1317890ceaa3e78994c7fe18ce744b14"
     },
     {
       "path": "kitchen/submission/source-packaging.test.mjs",
-      "bytes": 5356,
-      "sha256": "30bb794c2040e50fca5f525bd1a731dbceee98f340dcd43d0077286fb5cfbae8"
+      "bytes": 6927,
+      "sha256": "40e8993767f85af3286f34f10953fc558af79b16bc179e3746f244e61c28315b"
     },
     {
       "path": "kitchen/VERIFICATION.md",
-      "bytes": 5479,
-      "sha256": "3423f5b8c36230302f5ace72ea126d030d5fee313357226154d5822410b944fd"
+      "bytes": 5375,
+      "sha256": "c7dc90c66795c2c50ed7fffdcc480006e729696fb00feef71ea721570a985d84"
     },
     {
       "path": "kitchen/web/index.html",
-      "bytes": 518,
-      "sha256": "94805944d2857e1beab4c491c4796b65392fb2b853776dd5785b23216633ab39"
+      "bytes": 512,
+      "sha256": "91a96eb80a12916ec0d3e7f34aa7299660b29a50f45c33c0985605fc63a72c39"
     },
     {
       "path": "kitchen/web/main.jsx",
-      "bytes": 39886,
-      "sha256": "f69018b64aeee3e0a980efe831b702a6616b3246fc185221645047e4cd187511"
+      "bytes": 39878,
+      "sha256": "1c866423a8a85a76a649903361ba74f337e4a5198b41c89321de0bb891429e15"
     },
     {
       "path": "kitchen/web/styles.css",
@@ -130,13 +130,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 6270,
-      "sha256": "41dc4d5a5debb7be561f63222c0529dc1c9c57bd73bb0ef7e80719288a31a383"
+      "bytes": 5793,
+      "sha256": "ec2eb34c9a9a73912cc9709348554a2d356da383383c25f7f72385cce97dd30e"
     },
     {
       "path": "RUNTIME.md",
-      "bytes": 1679,
-      "sha256": "50a0c34b89a7ab19152204297f1e9a5ad563902cb1b1e0202780d42f552caa38"
+      "bytes": 1581,
+      "sha256": "6286c28ab7f577f8253ee52dd6714c8a125968e56d4ff117b9744bf83130c8c2"
     }
   ]
 }
