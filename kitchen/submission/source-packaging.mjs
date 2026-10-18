@@ -113,65 +113,64 @@ export function makePackageFiles(originalLock) {
   return { manifest, lock };
 }
 
-const README = `# Savora — Kitchen Rescue
+const README = `# Savora Kitchen Rescue
 
-A local graph-grounded recovery workbench for Graph Hacks Track 01. A delayed ingredient connects to shared preparations and two services. Competing stock reservations invalidate one alternative; a human reviews the graph-backed proposal before reservations and preparation tasks change together.
+When an ingredient delivery is delayed, which meals depend on it, and what can the kitchen prepare instead? Savora follows those dependencies in FalkorDB, checks replacement ingredients against existing stock reservations and service times, and presents a recovery plan for human approval.
 
-This standalone export contains **only Kitchen Rescue**, not the earlier travel prototype. All quantities, recipes and timings are fictional. It is not food-safety advice or production kitchen software.
+Built for Graph Hacks Track 01, Agents That Act on Connected Data. The demo uses fictional quantities, recipes and timings. It is not food-safety advice or production kitchen software.
 
-## Run locally — no Docker, no Cloud database, no model key required
+## Run locally
 
-Requirements: Node.js 22.12+, npm, native Redis on PATH, and the native FalkorDB module used by FalkorDBLite. The tested platform is macOS arm64. Upstream also supports Linux x64, but this project has not verified that platform.
+No Docker, cloud database or model key is required. You need Node.js 22.12+, npm, native Redis on PATH, and the native FalkorDB module used by FalkorDBLite. The tested platform is macOS arm64. Linux x64 is supported upstream but has not been tested for this project.
 
-1. Extract this source folder to a short path, such as ~/savora, because Unix socket paths have platform length limits.
-2. Install native Redis with your package manager if it is absent (macOS: \`brew install redis\`). **Do not start brew services**: the application owns its private Redis process.
+1. Clone the repository to a short path, such as ~/savora, to stay within Unix socket path limits.
+2. Install native Redis if needed. On macOS, use \`brew install redis\`. Do not start brew services; Savora manages its own private Redis process.
 3. Run \`npm ci\`, then \`npm run dev\`. Open http://127.0.0.1:5180.
-4. Build with \`npm run build\`; run \`npm start\` and open http://127.0.0.1:4319 for production-style local serving.
-5. Run \`npm test\` for real graph/API/MCP/lifecycle tests and \`npm run test:packaging\` for export safeguards. Tests make no model API calls.
+4. For a local production build, run \`npm run build\`, then \`npm start\`. Open http://127.0.0.1:4319.
+5. Run \`npm test\` for graph, API, MCP and lifecycle tests. Run \`npm run test:packaging\` to check source-package safeguards. Tests make no model API calls.
 
-FalkorDBLite 0.3.0's optional macOS binary package was unusable on the development machine; native Redis plus the official module download worked. Installation may need internet access, OpenSSL libraries and/or libomp. A successful npm install does not prove native runtime compatibility. This export does not bundle node_modules or native binaries. Consult RUNTIME.md before claiming a fresh-machine install works.
+FalkorDBLite 0.3.0's optional macOS binary package was unusable on the development machine. Native Redis plus the official FalkorDB module download worked. Installation may require internet access, OpenSSL libraries or libomp. Tests and builds reused installed dependencies; a fresh \`npm ci\` and a fresh-machine installation remain unverified. See [runtime notes](RUNTIME.md) for details.
 
-The API and Vite server bind to loopback. The database uses a private Unix socket, TCP disabled, and a persistent .kitchen-data directory. No data directory is included. Use a **new empty** KITCHEN_DATA_DIR for another rehearsal; never erase prior approval evidence just to restart a demo. Normal shutdown releases .savora.lock. After a hard crash, verify the old process has stopped before manually recovering a stale lock.
+Both servers bind to loopback. The database uses a private Unix socket with TCP disabled and persists data in .kitchen-data. To try a fresh scenario, set KITCHEN_DATA_DIR to a new empty directory instead of deleting prior approvals. Normal shutdown releases .savora.lock. After a hard crash, confirm the old process has stopped before recovering a stale lock.
 
-## Real graph and agent behavior
+## Graph model and recovery
 
-- Ingredient → shared base → preparation → dish → service uses actual variable-length FalkorDB Cypher traversal.
-- Declared alternatives, ingredient stock, other reservations and service timing constrain recovery. Missing/invalid facts fail closed; the model cannot invent recipes or Cypher.
-- Real MCP SDK client/server calls use local InMemoryTransport. This is **local MCP**, not an externally hosted MCP endpoint.
-- Without private Gemini configuration, disclosed **guided mode** calls actual MCP tools deterministically. It is not described as AI-selected reasoning.
-- Gemini, when explicitly configured, selects allowed read/proposal tools. Human approval is not a model tool. The model cannot reserve stock, approve, purchase or message.
-- Approval uses a separate local HTTP endpoint, server-owned proposals, a current-stock recheck, revision guards, one atomic graph mutation and durable audit. Retries return the prior receipt.
+Savora traverses Ingredient → shared base → preparation → dish → service paths using variable-length Cypher. Alternative ingredients, stock reservations and service timing are also graph facts. Missing or invalid facts block a proposal rather than being filled in by the model.
+
+The [graph store](kitchen/store.mjs) contains the parameterized Cypher queries, stock checks and atomic approval mutation. The [data model and API contract](kitchen/CONTRACT.md) describes the relationships and response shapes. [Graph tests](kitchen/store.test.mjs) and [end-to-end tests](kitchen/integration.test.mjs) check that changed graph facts change or block the result.
+
+The [agent](kitchen/agent.mjs) calls tools through the MCP SDK's local InMemoryTransport. This is local MCP, not an externally hosted endpoint. Without Gemini configuration, guided mode calls those tools deterministically and is labeled as such. With Gemini enabled, the model selects permitted read and proposal tools; it cannot invent Cypher or recipes.
+
+Approval is human-only and is not exposed as a model tool. A separate local HTTP endpoint checks the server-owned proposal, current stock and revision, then atomically records the reservation, preparation tasks and audit event. Repeated approval requests return the existing receipt. The model cannot approve, reserve stock, purchase ingredients or message suppliers.
 
 ## Optional Gemini
 
-CONFIGURATION.example.txt contains only empty placeholders and a disabled confirmation. Create a private .env.kitchen yourself if wanted; no private configuration is copied by this exporter. Only enable the model after independently checking the project's free tier, billing and quota. The application does not verify billing or guarantee free external API use. It does not buy credits, enable billing or switch to a paid fallback. Keep the dataset fictional.
+Use [CONFIGURATION.example.txt](CONFIGURATION.example.txt) to create a private .env.kitchen. Check your project's free tier, billing and quota before enabling the model. Savora cannot verify billing or guarantee free API use. It does not buy credits, enable billing or switch to a paid fallback. Keep credentials private and use only fictional data.
 
-See kitchen/VERIFICATION.md for the development verification record: live Gemini investigation and recovery-tool selection were verified on 18 October 2026; approval/persistence browser checks used guided mode. Approval remains human-only, not a model tool. Referenced screenshots/QA databases are intentionally **not** included here.
+The [verification record](kitchen/VERIFICATION.md) documents live Gemini investigation and recovery-tool selection on 18 October 2026. Approval and persistence browser checks used guided mode. Each run reports its actual mode, including a guided fallback if needed.
 
-## Demonstration
+## Try the scenario
 
-Ask about delayed Roma tomatoes at one hop, then four. Shallow traversal is “not evaluated,” not an all-clear. Four hops connects two services/64 portions. Review the passata conflict: 10 kg on hand minus 8 kg already reserved leaves 2 kg against an 8 kg requirement. The declared canned-tomato alternative requires 9 kg of 10 kg available. Review timings, approve, reload the persisted prep board, then ask about unknown truffle.
+Ask about delayed Roma tomatoes at one hop, then four. At one hop, downstream service impact is not evaluated. Four hops connects two services and 64 portions. Review the passata conflict: 10 kg on hand minus 8 kg reserved leaves 2 kg against an 8 kg requirement. Canned tomatoes require 9 kg of the 10 kg available. Review the timing assumptions, approve the plan, then reload to see the saved preparation tasks. Ask about truffle to see how an unmodeled ingredient is handled.
 
-## Publication and boundaries
+## Limits and attribution
 
-This is a single-local-user prototype: no public writable deployment, multi-user authorization, supplier messages or purchases. No source-code license has been chosen by this exporter; the owner should choose a license before public publication if desired. Third-party dependencies retain their own licenses, and the food photograph has separate attribution in ASSET_LICENSES.md.
+Savora is a single-user local demo. It has no multi-user authorization and is not safe for a public writable deployment. It does not send supplier messages, place purchases or infer allergens or food safety. The graph is bounded to four hops; missing coverage is not evidence that a service is unaffected.
 
-Review the allowlisted source, empty configuration template and export-manifest.json before publishing. Initialize a **new repository from this clean source folder**, not from the parent workspace; this avoids unrelated history/data. This export does not create repositories, push commits, upload files or submit the entry.
+The tomato photograph is a real photograph by Dilara on Pexels, not an AI-generated image. It illustrates the interface and does not establish the tomato variety. See [asset attribution and license](ASSET_LICENSES.md). Dependencies retain their own licenses; no project source-code license has been selected.
 
 ## AI-assistance disclosure
 
-This project was developed with **OpenAI Codex coding assistance**, including implementation, tests, research and technical documentation. The concept and design direction are participant-owned and were developed through human/AI collaboration. Automated tests and actual local FalkorDB/MCP execution were verified; kitchen/VERIFICATION.md describes the verification scope, including live Gemini investigation and recovery-tool selection. These checks do not establish that the participant has personally reviewed every part of the implementation.
-
-**Before final submission, the participant must review and understand the code, queries, agent boundaries, tests and claims, and meaningfully own the submitted work.** That review is not asserted to be complete. Optional Gemini use inside the application is separate from Codex assistance used to build it. The tomato photograph is a licensed real photograph, not an AI-generated image; see ASSET_LICENSES.md.
+Built with **OpenAI Codex coding assistance** for implementation, tests, research and documentation, under the participant's concept and design direction. The verification record covers automated tests and actual FalkorDB, MCP and Gemini checks. This does not certify complete participant review; the participant must review and understand the code and claims before submission. Gemini use within the application is separate from that development assistance.
 `;
 
 const RUNTIME = `# Runtime and reproducibility notes
 
-- package.json pins exact direct versions from the existing npm lockfile. package-lock.json preserves the same integrity-pinned transitive package graph, with kitchen-only root metadata. No dependencies are installed by the exporter.
+- package.json pins exact direct versions. package-lock.json records the integrity-pinned transitive dependencies. Native runtime prerequisites are installed separately.
 - Use npm ci, not a lockfile regeneration, for the first clean install. Dependency lifecycle scripts may download the FalkorDB module. Review them according to your normal supply-chain policy.
 - The development runtime was macOS arm64, native Redis 8.10.2, and FalkorDB module 4.18.3, loaded by falkordblite 0.3.0. The native Redis executable comes from the operating-system package manager; it is **not** pinned by package-lock.json or bundled here.
 - The optional platform-package issue means this is not a guaranteed one-command, offline installation. Do not install a differently named platform bundle merely because its filename looks compatible; verify the native architecture.
-- Current-platform source/export build and test checks may reuse existing installed dependencies. They do not establish that npm ci or the native runtime works on a fresh machine. Linux x64 and other environments remain unverified until tested there.
+- Build and test checks reused existing installed dependencies. They do not establish that npm ci or the native runtime works on a fresh machine. Linux x64 and other environments remain unverified until tested there.
 - The exporter writes a standard ZIP with fixed timestamps and an explicit file list. export-manifest.json records SHA-256 hashes of every included source/generated file except the manifest itself. No filesystem metadata, home directory paths, env values or existing database contents are added to that manifest.
 
 Official runtime source: https://github.com/FalkorDB/falkordblite-ts
@@ -208,8 +207,8 @@ export async function collectSourceFiles(root) {
   const files = new Map([...source, ...generatedFiles(manifest, lock)]);
   checkRelativeImports(files);
   const records = [...files].sort(([a], [b]) => a.localeCompare(b)).map(([path, bytes]) => ({ path, bytes: bytes.length, sha256: hash(bytes) }));
-  files.set('export-manifest.json', Buffer.from(json({ format: 1, project: 'Savora — Kitchen Rescue',
-    policy: 'Explicit file allowlist; no .env files, credentials, database state, node_modules, artifacts or travel application source.', files: records })));
+  files.set('export-manifest.json', Buffer.from(json({ format: 1, project: 'Savora Kitchen Rescue',
+    policy: 'Explicit source-file allowlist; excludes private configuration, credentials, database state, installed dependencies and generated artifacts.', files: records })));
   return new Map([...files].sort(([a], [b]) => a.localeCompare(b)));
 }
 

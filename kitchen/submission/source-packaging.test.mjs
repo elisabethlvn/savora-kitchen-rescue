@@ -48,7 +48,7 @@ test('actual export allowlist closes imports, includes the photograph and hashes
   const readme = files.get('README.md').toString('utf8');
   assert.match(readme, /OpenAI Codex coding assistance/);
   assert.match(readme, /participant must review and understand/);
-  assert.match(readme, /That review is not asserted to be complete/);
+  assert.match(readme, /does not certify complete participant review/);
   assert.ok(![...files.keys()].some(name => name.startsWith('server/') || name.startsWith('web/') || name.startsWith('agent/') || name.includes('.env')));
   const manifest = JSON.parse(files.get('export-manifest.json'));
   assert.equal(manifest.files.length, files.size - 1);
@@ -57,6 +57,28 @@ test('actual export allowlist closes imports, includes the photograph and hashes
     assert.equal(item.sha256, sha(files.get(item.path)));
   }
   assert.deepEqual(makeZip(files), makeZip(files));
+});
+
+test('public documentation describes the project without internal packaging language', async () => {
+  const files = await collectSourceFiles(root);
+  for (const name of ['README.md', 'RUNTIME.md', 'ASSET_LICENSES.md', 'package.json', 'package-lock.json', 'export-manifest.json']) {
+    const content = files.get(name).toString('utf8');
+    assert.doesNotMatch(content, /\u2014/, name);
+    assert.doesNotMatch(content, /earlier travel|travel prototype|travel application source|standalone export|parent workspace|before publishing|new repository from/i, name);
+  }
+  const readme = files.get('README.md').toString('utf8');
+  for (const path of ['kitchen/store.mjs', 'kitchen/CONTRACT.md', 'kitchen/store.test.mjs', 'kitchen/integration.test.mjs', 'kitchen/agent.mjs', 'kitchen/VERIFICATION.md', 'RUNTIME.md', 'ASSET_LICENSES.md']) {
+    assert.ok(readme.includes(`](${path})`), `README links ${path}`);
+    assert.ok(files.has(path), `README target exists: ${path}`);
+  }
+  assert.match(readme, /fictional quantities, recipes and timings/);
+  assert.match(readme, /fresh-machine installation remain unverified/);
+  assert.match(readme, /guided mode calls those tools deterministically/);
+  assert.match(readme, /Approval is human-only and is not exposed as a model tool/);
+  assert.match(readme, /not safe for a public writable deployment/);
+  const manifest = JSON.parse(files.get('export-manifest.json'));
+  assert.equal(manifest.project, 'Savora Kitchen Rescue');
+  assert.match(manifest.policy, /excludes private configuration, credentials, database state/);
 });
 
 test('allowlist refuses a symlink even when the target is otherwise readable', async () => {
