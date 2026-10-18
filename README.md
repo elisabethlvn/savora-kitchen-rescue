@@ -24,20 +24,44 @@ Savora traverses Ingredient → shared base → preparation → dish → service
 
 ### Graph at a glance
 
+#### Recipe dependencies
+
 ```mermaid
+---
+config:
+  htmlLabels: false
+  flowchart:
+    useMaxWidth: true
+---
 flowchart TD
     roma["Roma tomatoes"] -->|SUPPORTS| base["Tomato base"]
     base -->|SUPPORTS| filling["Lasagna filling"]
     filling -->|SUPPORTS| lasagna["Baked lasagna"]
-    lasagna -->|SUPPORTS| gallery["Gallery dinner: 40 portions"]
+    lasagna -->|SUPPORTS| gallery["Gallery dinner"]
     base -->|SUPPORTS| sauce["Arrabbiata sauce"]
     sauce -->|SUPPORTS| penne["Penne arrabbiata"]
-    penne -->|SUPPORTS| studio["Studio supper: 24 portions"]
-    roma -->|HAS_ALTERNATIVE| passata["Passata: 10 kg stock"]
-    roma -->|HAS_ALTERNATIVE| canned["Canned tomatoes: 10 kg stock"]
-    reservation["Reservation: 8 kg passata"] -->|RESERVES| passata
+    penne -->|SUPPORTS| studio["Studio supper"]
+```
+
+Gallery dinner has 40 portions; Studio supper has 24. One hop reaches the shared base. Four hops reaches both services.
+
+#### Alternatives and protected stock
+
+```mermaid
+---
+config:
+  htmlLabels: false
+  flowchart:
+    useMaxWidth: true
+---
+flowchart TD
+    roma["Roma tomatoes"] -->|HAS_ALTERNATIVE| passata["Passata"]
+    roma -->|HAS_ALTERNATIVE| canned["Canned tomatoes"]
+    reservation["8 kg reservation"] -->|RESERVES| passata
     reservation -->|FOR_SERVICE| lunch["Tomorrow lunch"]
 ```
+
+Passata and canned tomatoes each start with 10 kg on hand. The existing reservation protects 8 kg of passata for tomorrow's lunch. These are two views of the same graph; short labels keep both readable in the README.
 
 Every food, preparation and service node shown has the `KitchenNode` label; ingredients also have `Ingredient`. Base, preparation, dish and service are `kind` property values, not separate labels. The reservation has the `Reservation` label.
 
