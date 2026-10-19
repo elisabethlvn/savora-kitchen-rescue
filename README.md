@@ -4,6 +4,22 @@ When an ingredient delivery is delayed, which meals depend on it, and what can t
 
 Built for Graph Hacks Track 01, Agents That Act on Connected Data. The demo uses fictional quantities, recipes and timings. It is not food-safety advice or production kitchen software.
 
+## App screenshots
+
+Screenshots of the working local app with fictional kitchen data. Click an image to view it at full size.
+
+### Follow the dependencies
+
+![Savora investigation screen showing the four-hop paths from Roma tomatoes to two dinner services and the MCP tool trace](https://github.com/user-attachments/assets/8b0fda14-96cf-443c-836a-1d24c4bb2d1a)
+
+Four hops connects two services and 64 portions through the shared tomato base. This run used Gemini-selected tools through local MCP; the displayed paths and facts come from FalkorDB. Connected does not necessarily mean late.
+
+### Keep the approved plan
+
+![Savora prep board showing 9 kg of canned tomatoes reserved, 1 kg remaining free and three saved preparation targets](https://github.com/user-attachments/assets/dc4d10bf-2527-429d-a4c1-450f8bbb8715)
+
+After explicit human approval, the local graph records a 9 kg canned-tomato reservation and three preparation targets. No purchase, payment or supplier message is made.
+
 ## Run locally
 
 No Docker, cloud database or model key is required. You need Node.js 22.12+, npm, native Redis on PATH, and the native FalkorDB module used by FalkorDBLite. The tested platform is macOS arm64. Linux x64 is supported upstream but has not been tested for this project.
