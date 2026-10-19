@@ -26,7 +26,7 @@ Savora traverses Ingredient → shared base → preparation → dish → service
 
 ![Official FalkorDB Browser showing Savora's four-hop tomato dependency graph](https://github.com/user-attachments/assets/7c0b09ff-82a8-4ba6-b53e-94a67133e1e6)
 
-Captured on 19 October 2026 from an isolated, read-only copy of Savora's persisted fictional kitchen graph. The query result contains 8 distinct nodes and 7 `SUPPORTS` relationships, including the paths to Gallery dinner and Studio supper. The sidebar counts the full database, not just this result.
+Savora's persisted fictional kitchen graph. The query result contains 8 distinct nodes and 7 `SUPPORTS` relationships, including the paths to Gallery dinner and Studio supper. The sidebar counts the full database, not just this result.
 
 ```cypher
 MATCH p=(:Ingredient {id:'roma-tomatoes'})
