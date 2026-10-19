@@ -22,6 +22,20 @@ Both servers bind to loopback. The database uses a private Unix socket with TCP 
 
 Savora traverses Ingredient → shared base → preparation → dish → service paths using variable-length Cypher. Alternative ingredients, stock reservations and service timing are also graph facts. Missing or invalid facts block a proposal rather than being filled in by the model.
 
+### Inspecting the stored graph
+
+![Official FalkorDB Browser showing Savora's four-hop tomato dependency graph](https://github.com/user-attachments/assets/7c0b09ff-82a8-4ba6-b53e-94a67133e1e6)
+
+Captured on 19 October 2026 from an isolated, read-only copy of Savora's persisted fictional kitchen graph. The query result contains 8 distinct nodes and 7 `SUPPORTS` relationships, including the paths to Gallery dinner and Studio supper. The sidebar counts the full database, not just this result.
+
+```cypher
+MATCH p=(:Ingredient {id:'roma-tomatoes'})
+-[:SUPPORTS*1..4]->(:KitchenNode)
+RETURN p
+```
+
+This is a direct database inspection, separate from the agent execution shown in the demo video. The application uses the parameterized impact query in [kitchen/store.mjs](kitchen/store.mjs).
+
 ### Graph at a glance
 
 #### Recipe dependencies
